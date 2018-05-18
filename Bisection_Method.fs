@@ -1,12 +1,16 @@
-
 let rec Bisection_Method (f:float -> float) (a:float) (b:float) (tol:float) (iternum:int) :float =
-    if (f a * f b >= 0.0) then 
-        printfn "No solution inside the interval! Returning 0."
+    //assert that there is a root inside the interval
+    if (sign(f a) * sign(f b) > 0) then 
+        printfn "No root inside the interval! Returning 0."
         0.0
     else
         let x_new = (a+b)/2.0
+        //if our approximation is not good enough, recursively iterate until it is.
         if (b-a >= tol ) then
             printfn "iternum: %d | x_new: %f" iternum x_new
+            (*if the sign of the function at the midpoint is equal to the sign of the function at our current point,
+            discard the lower half of the interval 
+            *)
             if sign(f a) * sign(f x_new) > 0 then
                 Bisection_Method f x_new b tol (iternum+1)
             else
